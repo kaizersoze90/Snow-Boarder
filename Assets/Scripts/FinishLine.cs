@@ -5,9 +5,21 @@ using UnityEngine.SceneManagement;
 
 public class FinishLine : MonoBehaviour
 {
+    [SerializeField] float invokeDelay = 2f;
+    [SerializeField] ParticleSystem finishEffect;
+    [SerializeField] AudioClip finishSound;
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("You finished!");
+        if (other.tag == "Player")
+        {
+            GetComponent<AudioSource>().PlayOneShot(finishSound, 1f);
+            finishEffect.Play();
+            Invoke("ReloadScene", invokeDelay);
+        }
+    }
+    void ReloadScene()
+    {
         SceneManager.LoadScene("GameScene");
     }
 }
